@@ -8,3 +8,5 @@ TODO for Oct. 27th:
 - Arm must support any number of links
 - Arm must support variable arm lengths (e.g. l1 = 1.2, l2 = 3.1, etc...)
 - Must be able to display arm animation and circle the target point as well
+
+%%%%
