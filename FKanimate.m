@@ -9,27 +9,28 @@ function V = FKanimate(angles, des_pos, arm_lengths)
 N_FRAMES = size(angles,1);
 N_JOINTS = size(angles,2);
 
-AXIS = sum(arm_lengths);
+AXIS = max(sum(arm_lengths), des_pos(1), des_pos(2)); % TODO: Error handle, unreachable
 
 assert(N_JOINTS == length(arm_lengths));
 
 if nargin < 3
     arm_lengths = ones(N_JOINTS);
 end
-
+plot(des_pos(1), des_pos(2), 'k.', 'markersize',20);
+axis([-AXIS AXIS -AXIS AXIS]);
+hold on;
+grid on;
 for frame=1:N_FRAMES
     [X,Y] = FK2D(angles(frame,:), arm_lengths);
     % Init with 0,0 for plotting
     X = [0 X];
     Y = [0 Y];
-    
-    plot(X,Y, 'linewidth',4);
-    axis([-AXIS AXIS -AXIS AXIS]);
-    hold on;
-    grid on;
-    plot(des_pos(1), des_pos(2), 'k.', 'markersize',20);
-    hold off;
-    pause(0.25);
+    if frame == 1
+        f = plot(X,Y, 'linewidth',4);
+    else    
+        set(f, 'xdata', X, 'ydata', Y);
+    end
+    pause(0.1);
 end
 
 end
