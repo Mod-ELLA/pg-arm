@@ -23,10 +23,11 @@ for frame=1:N_FRAMES
     X = [0 X];
     Y = [0 Y];
     
-    plot(X,Y);
+    plot(X,Y, 'linewidth',4);
     axis([-AXIS AXIS -AXIS AXIS]);
     hold on;
-    plot(des_pos(1), des_pos(2), 'o');
+    grid on;
+    plot(des_pos(1), des_pos(2), 'k.', 'markersize',20);
     hold off;
     pause(0.25);
 end
