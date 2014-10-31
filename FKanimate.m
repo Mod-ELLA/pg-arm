@@ -9,7 +9,7 @@ function V = FKanimate(angles, des_pos, arm_lengths)
 N_FRAMES = size(angles,1);
 N_JOINTS = size(angles,2);
 
-AXIS = max(sum(arm_lengths), des_pos(1), des_pos(2)); % TODO: Error handle, unreachable
+AXIS = max([sum(arm_lengths), des_pos(1), des_pos(2)]); % TODO: Error handle, unreachable
 
 assert(N_JOINTS == length(arm_lengths));
 
