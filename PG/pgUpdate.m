@@ -2,7 +2,7 @@ function M_t_plus_1 = pgUpdate(M_t, grad, step)
 % Update the Model given the gradient
 % M_t           : a model matrix, m by n
 % grad          : a vector of gradient of J at theta, nm by 1
-% step          : update step size
+% step          : update step size, a positive scalar
 % M_t_plus_1    : updated model matrix, m by n
 if nargin == 2
     step = 0.001;
