@@ -15,7 +15,7 @@ states.angles = theta;
 % Initialize model matrix
 features = getFeatures(states);
 model = rand(length(states.angles), length(features));
-matrix_stationary_thres = 0.001;
+matrix_stationary_thres = 0.00001;
 % Needs to attempt to learn M by repeatedly calling pgUpdate, for at most
 % max_iter iterations or until converges (nothing updates by more than
 % step_thresh)
