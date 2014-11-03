@@ -13,9 +13,9 @@ function V = FKvelocity(state, angularVelocities)
 % end
 % V = tempV;
 
-[X,Y] = FK2D(state.angles,state.lengths)
+[X,Y] = FK2D(state.angles,state.lengths);
 state.angles = state.angles+angularVelocities*0.01;
-[X1,Y1] = FK2D(state.angles,state.lengths)
+[X1,Y1] = FK2D(state.angles,state.lengths);
 V = ([X(end);Y(end)]-[X1(end);Y1(end)])/0.01;
     
 end
