@@ -1,6 +1,6 @@
 function [X, Y] = FK2D(angles, lengths)
     %% FK method
-    % angles: 1xm vector of joint angles in degrees
+    % angles: 1xm vector of joint angles in radius
     % lengths: 1xm vector of link lengths (must be same units)
     % Assumption: all link lengths increment in the X-direction only
     % joints_pos: 2 by num_joints matrix records the position of all joints
@@ -14,8 +14,8 @@ function [X, Y] = FK2D(angles, lengths)
     
     for i=1:num_joints
         temp_angle = angles(i);
-        F = [cosd(temp_angle) -sind(temp_angle) temp_lengths(i)
-             sind(temp_angle) cosd(temp_angle) 0
+        F = [cos(temp_angle) -sin(temp_angle) temp_lengths(i)
+             sin(temp_angle) cos(temp_angle) 0
              0 0 1];
         acc_matrix = acc_matrix * F;
         joints_pos = acc_matrix * [lengths(i); 0; 1]; %3x1

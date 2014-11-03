@@ -18,7 +18,7 @@ elseif nargin == 5
 end
 %% Get the current position of the end effector
 [x, y] = FK2D(state.angles, state.lengths);
-current_pos = [x; y];
+current_pos = [x(end); y(end)];
 %% Calculate the reward based on the estimated position
 est_pos = current_pos + end_velocity*t;
 distance = norm(des_pos - est_pos);
