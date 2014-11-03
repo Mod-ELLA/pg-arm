@@ -15,6 +15,7 @@ features = getFeatures(state);
 [n,m] = size(model);
 deltaTheta = ones(n,m)*0.001; %  generate policy variation
 grad = zeros(n,m);% Initial shape of grad matrix
+% TODO: Can we vectorize this part to make it faster? -Ed
 for i=1:n
     for j = 1:m
         modelRef1 = model;

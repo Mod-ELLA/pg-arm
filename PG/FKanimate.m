@@ -16,6 +16,7 @@ persistent f
 %N_JOINTS = size(angles,2);
 if frame == 1
     AXIS = max([sum(arm_lengths), des_pos(1), des_pos(2)]); % TODO: Error handle, unreachable
+    figure
     plot(des_pos(1), des_pos(2), 'k.', 'markersize',20);
     axis([-AXIS AXIS -AXIS AXIS]);
     hold on;
