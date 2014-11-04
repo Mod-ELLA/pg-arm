@@ -2,7 +2,7 @@
 %% Initialization
 max_iter = 10000;
 step_thresh = 0.001;
-reach_desination_thres = 0.001;
+reach_desination_thres = 0.01;
 
 % Initialize linked arms
 % TODO: write a function for this

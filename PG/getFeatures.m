@@ -6,5 +6,7 @@ function features = getFeatures(state)
 joint_angles = reshape(state.angles,[],1);
 features = joint_angles;
 % features = [features; sin(joint_angles); cos(joint_angles); tan(joint_angles); sin(joint_angles).*cos(joint_angles)];
-features = [features; sin(joint_angles); cos(joint_angles)];
+% features = [features; sin(joint_angles); cos(joint_angles)];
+% Reduced the features to be a PD Controller
+features = [features; 1];
 end
