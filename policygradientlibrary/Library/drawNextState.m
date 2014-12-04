@@ -1,5 +1,6 @@
-function xn = drawNextState(x,u);
+function xn = drawNextState(policy,x,u)
 % Programmed by Jan Peters. 
+% Modified by Yunkai Cui
 %
 % xn = drawNextState(x,u) draws the next state from the transition
 % function given state x and action u. The LQR next state is deterministic
@@ -10,22 +11,12 @@ function xn = drawNextState(x,u);
 % Related: initializeLQRProblem, initializeDiscreteProblem, 
 %          drawStartState
 
-	global problemType
-
-	if(problemType==1)
-            global p
-      
-            probTable = p(x,u,:);
-            xn = drawFromTable(probTable);       
-	elseif(problemType==2)   
-            global A b N
-
-            if(size(x,2)==length(x)) 
-                y(1:N,1)=x(1,1:N)'; 
-                x=y; 
-            end;
-
-            xn = A*x + b*u;   	      
-        else
-            disp('ERROR: initialize problem.');
-	end;      
+if(policy.type==1||policy.type==2)
+    probTable = policy.p(x,u,:);
+    xn = drawFromTable(probTable);       
+elseif(policy.type==3)
+    x_dot = policy.A*x + policy.b*u;
+    xn = x + x_dot*policy.t;   	      
+else
+    disp('ERROR: initialize problem.');
+end;      

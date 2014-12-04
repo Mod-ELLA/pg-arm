@@ -18,6 +18,9 @@ grad = zeros(n,m);% Initial shape of grad matrix
 % TODO: Can we vectorize this part to make it faster? -Ed
 for i=1:n
     for j = 1:m
+%         if i == 2 && j == 3
+%             display('debugging point')
+%         end
         modelRef1 = model;
         modelRef2 = model;
         modelRef1(i,j) = modelRef1(i,j)+deltaTheta(i,j);

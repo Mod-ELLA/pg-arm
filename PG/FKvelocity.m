@@ -1,4 +1,6 @@
 function V = FKvelocity(state, angularVelocities)
+% Programed by Chenyang Zhao
+% TODO: Test code for checking correctness
 % Need to compute the Jacobian
 % Given the state struct, and angular velocities
 % (rad/time) compute the end effector velocity V
