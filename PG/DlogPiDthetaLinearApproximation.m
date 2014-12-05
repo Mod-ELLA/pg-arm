@@ -4,7 +4,7 @@ function gradient_of_log_pi = DlogPiDthetaLinearApproximation(x,u,policy,type)
 if nargin == 3
     type = 0;
 end
-epsilon = 0.000001;
+epsilon = policy.pdf_accuracy;
 %% First, caculate gradient of K
 num = size(policy.theta.k,1)*size(policy.theta.k,2);
 increment_mat = epsilon*rand(size(policy.theta.k,1), size(policy.theta.k,2), 2*num);

@@ -13,8 +13,10 @@ state.angles = theta;
 discount = 0.99;
 
 % Initialize Gaussian Policy Model
-k = rand(N, N+1);
-% k = [-6 0 0; 0 -6 6*pi/2];
+% k = rand(N, N+1);
+% k = [10.4661   10.0807  -13.4672;
+%    11.8824   10.1551  -13.9065];
+k = [-6 0 0; 0 -6 6*pi/2];
 sigma = 0.001*rand(N,1);
 % system dynamic function: \dot{x} = A*x + B*u
 A = zeros(N); % System dynamic

@@ -6,7 +6,7 @@ run init
 % Initialize system
 N = 2; % number of links
 linkages = ones(N,1)*0.1;   % legnth of links
-dest_pos = [0.1; 0.1];     % Desired position
+dest_pos = [0.1; 0.1];      % Desired position
 theta = zeros(N,1);         % Initial joint angle
 state.lengths = linkages;
 state.angles = theta;
@@ -20,13 +20,13 @@ A = zeros(N); % System dynamic
 B = eye(N); % System dynamic
 Q = eye(2); % weight of distance on reward
 R = eye(N); % weight of angular velocity in reward
-eta = 1;    % importance factor of angular velocity
+eta = 0.01;    % importance factor of angular velocity
 t = 0.01;
 discretize = 10000;
 policy = initGaussPolicy(k,sigma,A, B, Q, R, eta, t, discretize);
 
 % Initialize simulation
-max_exploration = 1000; % depends on discount^max_exploration
+max_exploration = 300; % depends on discount^max_exploration
 trail_num = 100;        % number of trails to try
 
 % Turn on the profiler
@@ -44,7 +44,9 @@ for tr = 1:trail_num
     for i = 1:max_exploration
         x = getFeatures(trail_state);
         u = drawAction(trail_policy,x);
-        trail_state.angles = mod(drawNextState(trail_policy, trail_state.angles,u),2*pi);
+        tmp_state = drawNextState(trail_policy, trail_state.angles,u);
+        sign = (tmp_state > 0).*2-1;
+        trail_state.angles = sign.*mod(abs(tmp_state),2*pi);
         reward = getRewardLQR(trail_state, dest_pos, trail_policy, u);
         accum_reward = accum_reward + a_l*reward;
         a_l = a_l*discount;
