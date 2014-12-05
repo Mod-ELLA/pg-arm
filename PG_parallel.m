@@ -27,8 +27,8 @@ policy = initGaussPolicy(k,sigma,A, B, Q, R, eta, t, discretize);
 
 % Initialize simulation
 max_exploration = 300; % depends on discount^max_exploration
-trail_num = 100;        % number of trails to try
-max_updates = 10000;
+trail_num = 200;        % number of trails to try
+max_updates = 1000;
 update_factor = 1.0/max_exploration/2;   % This last dividor is crucial important
 
 % Turn on the profiler
@@ -61,7 +61,10 @@ for it = 1:max_updates
             reward = getRewardLQR(trail_state, dest_pos, trail_policy, u);
             accum_reward = accum_reward + a_l*reward;
             a_l = a_l*discount;
-            gradient_log_pi = DlogPiDthetaLinearApproximation(x,u,trail_policy);
+            % Calculate use point wise linear
+            % gradient_log_pi = DlogPiDthetaLinearApproximation(x,u,trail_policy);
+            % Calculate use gaussian function
+            gradient_log_pi = DlogPiDTheta(trail_policy, x,u);
             accum_dlogpi_dtheta = accum_dlogpi_dtheta + gradient_log_pi.k;
         end
     %     b_num = b_num + reshape(accum_dlogpi_dtheta,1,[])*reshape(accum_dlogpi_dtheta,[],1)*accum_reward;
@@ -75,8 +78,8 @@ for it = 1:max_updates
     b = mean(b_his_1)/mean(b_his_2);
     Gk = g_rf_first - g_rf_second*b;
     Gk = Gk/trail_num;
-    if max(max(Gk))*update_factor > 0.1
-        Gk = Gk/(max(max(Gk))/0.1);
+    if max(max(abs(Gk)))*update_factor > 0.1
+        Gk = Gk/(max(max(abs(Gk)))/0.1);
     else
         Gk = Gk*update_factor;
     end
@@ -84,8 +87,8 @@ for it = 1:max_updates
     policy.theta.k
     rewards_expectation(it) = average_reward/trail_num;
     rewards_expectation(it)
-    angular_v = drawAction(policy,getFeatures(state));
-    state.angles = mod(drawNextState(policy, state.angles,angular_v),2*pi);
+%     angular_v = drawAction(policy,getFeatures(state));
+%     state.angles = mod(drawNextState(policy, state.angles,angular_v),2*pi);
     % run simulation
 %     FKanimate(state.angles, dest_pos, state.lengths, it,0);
 end

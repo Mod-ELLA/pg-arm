@@ -12,6 +12,7 @@ policy.type  = 3;
       
 % Initialize policy parameters
 policy.theta.k = k;
+policy.backup.k = k;
 policy.diag = 0;
 if size(sigma,1) == 1 || size(sigma,2) == 1
     sigma = diag(sigma.^2); 

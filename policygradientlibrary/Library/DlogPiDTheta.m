@@ -23,9 +23,18 @@ elseif(policy.type == 2)
   end;   
   der(selGibbs(x,u)) = (1 - pi_theta(policy, x, u))/policy.eps;
 elseif(policy.type == 3) 
-  % Have no idea the meaning of this calculation
-  sigma = max(policy.theta.sigma,0.00001*ones(size(policy.theta.sigma)));
-  k   = policy.theta.k;
-  der.k = (u-k*x)*x'/(sigma'*sigma);
-  der.sigma = ((u-k*x)'*(u-k*x)-sigma'*sigma)*sigma/(sigma'*sigma)^2;   
+  % Have no idea the meaning of original calculation
+  % The following calculation is based on 'the matrix coobook', equation
+  % (83)
+  % Multivariate gaussian function calculus
+  sigma = policy.theta.sigma;
+  k = policy.theta.k;
+  D = inv(sigma);
+  b = x;
+  c = -u;
+  der.k = -(D + D')*(k*b + c)*b';
+  % The following calculation is based on 'the matrix coobook', equation
+  % (61)
+  a = k*b + c;
+  der.sigma = inv(sigma)'*(a*a')*inv(sigma)';
 end;   

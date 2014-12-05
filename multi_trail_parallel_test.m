@@ -13,8 +13,10 @@ state.angles = theta;
 discount = 0.99;
 
 % Initialize Gaussian Policy Model
-k = rand(N, N+1);
-sigma = 0.001*rand(N,1);
+% k = rand(N, N+1);
+% sigma = 0.001*rand(N,1);
+k = [0.1 0.3 0.2; 0.05 0.4 0.7];
+sigma = 0.001*ones(N,1);
 % system dynamic function: \dot{x} = A*x + B*u
 A = zeros(N); % System dynamic
 B = eye(N); % System dynamic
@@ -27,7 +29,7 @@ policy = initGaussPolicy(k,sigma,A, B, Q, R, eta, t, discretize);
 
 % Initialize simulation
 max_exploration = 300; % depends on discount^max_exploration
-trail_num = 100;        % number of trails to try
+trail_num = 200;        % number of trails to try
 update_factor = 1.0/max_exploration;
 
 % Turn on the profiler
@@ -57,11 +59,12 @@ parfor tr = 1:trail_num
         reward = getRewardLQR(trail_state, dest_pos, trail_policy, u);
         accum_reward = accum_reward + a_l*reward;
         a_l = a_l*discount;
-        gradient_log_pi = DlogPiDthetaLinearApproximation(x,u,trail_policy);
+        % Calculate use point wise linear
+    %     gradient_log_pi = DlogPiDthetaLinearApproximation(x,u,trail_policy);
+        % Calculate use gaussian function
+        gradient_log_pi = DlogPiDTheta(trail_policy, x,u);
     %     gradient_log_pi.k
         accum_dlogpi_dtheta = accum_dlogpi_dtheta + gradient_log_pi.k;
-        % run simulation
-%         FKanimate(trail_state.angles, dest_pos, trail_state.lengths, i);
     end
 %     b_num = b_num + reshape(accum_dlogpi_dtheta,1,[])*reshape(accum_dlogpi_dtheta,[],1)*accum_reward;
 %     b_den = b_den + reshape(accum_dlogpi_dtheta,1,[])*reshape(accum_dlogpi_dtheta,[],1);
@@ -71,11 +74,13 @@ parfor tr = 1:trail_num
     b_his_2(tr) = reshape(accum_dlogpi_dtheta,1,[])*reshape(accum_dlogpi_dtheta,[],1);
 end
 b = mean(b_his_1)/mean(b_his_2);
+b
 Gk = g_rf_first - g_rf_second*b;
 Gk = Gk/trail_num;
+Gk
 delete(poolobj);
-if max(max(Gk)) > 0.1
-    Gk = Gk/(max(max(Gk))/0.1);
+if max(max(abs(Gk))) > 0.1
+    Gk = Gk/(max(max(abs(Gk)))/0.1);
 end
 Gk
 profile off
