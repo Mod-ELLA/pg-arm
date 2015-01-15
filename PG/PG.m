@@ -2,7 +2,7 @@
 %% Initialization
 max_iter = 10000;
 step_thresh = 0.001;
-reach_desination_thres = 0.01;
+reach_desination_thres = 0.008;
 
 % Initialize linked arms
 % TODO: write a function for this
@@ -14,7 +14,8 @@ states.angles = theta;
 
 % Initialize model matrix
 features = getFeatures(states);
-model = rand(length(states.angles), length(features));
+% model = rand(length(states.angles), length(features));
+model = [4 0 0; 0 -4 4*1.5707963];
 matrix_stationary_thres = 1e-6;
 
 % Needs to attempt to learn M by repeatedly calling pgUpdate, for at most
@@ -37,9 +38,9 @@ for i = 1:max_iter
     [X, Y] = FK2D(states.angles, states.lengths);
     end_effector = [X(end), Y(end)]';
     % reset the angles after reach the final position
-    if norm(dest_pos - end_effector) <= reach_desination_thres
-        states.angles = zeros(2,1);
-    end
+%     if norm(dest_pos - end_effector) <= reach_desination_thres
+%         states.angles = zeros(2,1);
+%     end
     if i == 1
         figure
         distances(1) = norm(dest_pos - end_effector);
