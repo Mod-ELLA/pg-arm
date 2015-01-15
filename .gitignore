@@ -2,4 +2,5 @@
 **/*.asv
 **/*.mat
 PG-ELLA/
+**/.DS_Store
 
