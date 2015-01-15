@@ -1,12 +1,15 @@
-function V = FKanimate(angles, des_pos, arm_lengths, frame)
+function V = FKanimate(angles, des_pos, arm_lengths, frame,enable_pause)
 %% Initialization for configuration
 % Configuration in 2D space
 % angles includes all the joint angles, where each row is a single frame of
 % the animation
 % arm_lengths includes all the arm lengths
 % des_pos is the desired position of the end effector
-if nargin < 3
+if nargin <= 3
     arm_lengths = ones(N_JOINTS);
+    enable_pause = 1;
+elseif   nargin < 5
+    enable_pause = 1;
 end
 N_JOINTS = length(angles);
 assert(N_JOINTS == length(arm_lengths));
@@ -34,7 +37,9 @@ else
     Y = [0 Y];
     set(f, 'xdata', X, 'ydata', Y);
 end
+if enable_pause
 pause(0.01);
+end
 %end
 
 end
